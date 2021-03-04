@@ -1,0 +1,3 @@
+# codeWarsProblems
+
+My codeWars solutions.
