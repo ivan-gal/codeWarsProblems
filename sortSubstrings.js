@@ -11,7 +11,7 @@ function inArray(array1, array2) {
       }
     }
   }
-  let sub2Array = [...new Set(subArray)];
+  const sub2Array = [...new Set(subArray)];
   return sub2Array.sort();
 }
 
