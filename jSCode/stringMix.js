@@ -24,8 +24,21 @@ function mix(s1, s2) {
     }
   }
 
+  let charStrings = '';
+
+  for (let i = 0; i <= arrayS2.length; i++) {
+    let arrayFiltered = arrayS1.filter((item) => item === arrayS2[i]);
+    if (arrayFiltered.length > 0) {
+      charStrings = charStrings + arrayS2[i];
+    }
+  }
+
+  console.log(charStrings);
+
+  //TO-DO compare counts1 and counts2 and print String.
+
   console.log(counts2);
   return counts1;
 }
 
-console.log(mix('hola que tal como estas', 'hola que tal como estas papafrita'0'));
+console.log(mix('hola que tal como estas', 'hola que tal como estas papafrita'));
