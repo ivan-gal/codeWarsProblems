@@ -14,6 +14,8 @@ The board is always 9 cells by 9 cells, and every cell only contains integers fr
 
 'use strict';
 
+//Check if a sudoku is valid
+
 function validSolution(board) {
   let isRowTrue = 0;
   let isColumnTrue = 0;
