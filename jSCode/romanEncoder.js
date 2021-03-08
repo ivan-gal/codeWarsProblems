@@ -1,5 +1,7 @@
 'use strict';
 
+//Solutions to convert romanNumbers to DecimalNumbers
+
 function romanConverter(number) {
   // convert the number to a roman numeral
   let numberToRoman = number;
