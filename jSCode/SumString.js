@@ -2,6 +2,8 @@
 
 //Awful solution, don't use ever, brute forced.
 
+//Reworking solution.
+
 function sumStrings(a, b) {
   let maxArray = [];
   let minArray = [];
