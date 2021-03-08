@@ -20,7 +20,7 @@ function validSolution(board) {
   let isGridTrue = 0;
   for (const array of board) {
     const setArray = Array.from(new Set(array));
-    if (setArray.length === array.length) isRowTrue = isRowTrue + 1;
+    if (setArray.length === array.length) isRowTrue += 1;
   }
   for (let i = 0; i < board.length; i++) {
     const arrayColumn = [];
@@ -29,16 +29,16 @@ function validSolution(board) {
       arrayColumn.push(array[i]);
     }
     const setColumn = Array.from(new Set(arrayColumn));
-    if (setColumn.length === arrayColumn.length) isColumnTrue = isColumnTrue + 1;
+    if (setColumn.length === arrayColumn.length) isColumnTrue += 1;
   }
 
-  for (let gridI = 0; gridI < board.length; gridI = gridI + 3) {
-    const gridArrayMaster1 = [];
-    const gridArrayMaster2 = [];
-    const gridArrayMaster3 = [];
+  for (let gridI = 0; gridI < board.length; gridI += 3) {
+    const gridArrayMaster1 = [],
+      gridArrayMaster2 = [],
+      gridArrayMaster3 = [];
     for (let rowI = 0; rowI < 3; rowI++) {
       const rowArray = board[gridI + rowI];
-      for (let columI = 0; columI < 9; columI = columI + 3) {
+      for (let columI = 0; columI < 9; columI += 3) {
         for (let singleColumn = 0; singleColumn < 3; singleColumn++) {
           if (columI < 3) {
             gridArrayMaster1.push(rowArray[columI + singleColumn]);
@@ -54,11 +54,11 @@ function validSolution(board) {
 
     const gridSet2 = Array.from(new Set(gridArrayMaster2));
     const gridSet3 = Array.from(new Set(gridArrayMaster3));
-    if (gridSet1.length === gridArrayMaster1.length) isGridTrue = isGridTrue + 1;
-    if (gridSet2.length === gridArrayMaster1.length) isGridTrue = isGridTrue + 1;
-    if (gridSet3.length === gridArrayMaster1.length) isGridTrue = isGridTrue + 1;
+    if (gridSet1.length === gridArrayMaster1.length) isGridTrue += 1;
+    if (gridSet2.length === gridArrayMaster1.length) isGridTrue += 1;
+    if (gridSet3.length === gridArrayMaster1.length) isGridTrue += 1;
   }
-  if (isGridTrue === isRowTrue && isGridTrue === isColumnTrue) return true;
+  if (isGridTrue > 8 && isRowTrue > 8 && isColumnTrue > 8) return true;
   else return false;
 }
 
