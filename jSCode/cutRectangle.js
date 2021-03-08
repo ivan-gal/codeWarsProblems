@@ -1,5 +1,7 @@
 'use strict';
 
+//Checks how many squares you can get in a rectangle.
+
 const sqInRect = (lng, wdth, mesArray = []) => {
   //your code here
   if (lng === wdth && mesArray.length === 0) return null;

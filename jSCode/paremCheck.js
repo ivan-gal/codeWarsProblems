@@ -1,5 +1,7 @@
 'use strict';
 
+//Checks if a code with parentheses is valid.
+
 function validParentheses(parens) {
   //TODO(
 
