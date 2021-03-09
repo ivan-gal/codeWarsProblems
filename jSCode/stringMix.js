@@ -1,44 +1,68 @@
 'use strict';
 
 function mix(s1, s2) {
-  const arrayS1 = s1.replace(/ /g, '').split('');
-  const arrayS2 = s2.replace(/ /g, '').split('');
-
-  let counts1 = {};
-  let counts2 = {};
-
-  arrayS1.sort();
-  arrayS2.sort();
-  for (let i = 0; i < arrayS1.length; i++) {
-    if (counts1[arrayS1[i]]) {
-      counts1[arrayS1[i]] += 1;
+  const arrayS1 = s1.replace(/ /g, '').split('').sort();
+  const arrayS2 = s2.replace(/ /g, '').split('').sort();
+  const reducedS1 = arrayS1.reduce((acc, a) => {
+    if (a in acc) {
+      acc[a]++;
     } else {
-      counts1[arrayS1[i]] = 1;
+      acc[a] = 1;
     }
-  }
-  for (let i = 0; i < arrayS2.length; i++) {
-    if (counts2[arrayS2[i]]) {
-      counts2[arrayS2[i]] += 1;
+    return acc;
+  }, {});
+
+  const reducedS2 = arrayS2.reduce((acc, a) => {
+    if (a in acc) {
+      acc[a]++;
     } else {
-      counts2[arrayS2[i]] = 1;
+      acc[a] = 1;
+    }
+    return acc;
+  }, {});
+  for (const key in reducedS2) {
+    if (reducedS2[key] < 2) delete reducedS2[key];
+    else if (key.charCodeAt(0) < 97) delete reducedS2[key];
+  }
+  for (const key in reducedS1) {
+    if (reducedS1[key] < 2) delete reducedS1[key];
+    else if (key.charCodeAt(0) < 97) delete reducedS1[key];
+  }
+  const finalObject = {};
+
+  for (const key in reducedS1) {
+    if (reducedS1[key] > reducedS2[key]) {
+      finalObject[key.repeat(reducedS1[key])] = 1;
+    } else if (reducedS2[key] > reducedS1[key]) {
+      finalObject[key.repeat(reducedS2[key])] = 2;
+    } else if (reducedS1[key] === reducedS2[key]) {
+      finalObject[key.repeat(reducedS1[key])] = '=';
+    } else {
+      finalObject[key.repeat(reducedS1[key])] = 1;
     }
   }
 
-  let charStrings = '';
-
-  for (let i = 0; i <= arrayS2.length; i++) {
-    let arrayFiltered = arrayS1.filter((item) => item === arrayS2[i]);
-    if (arrayFiltered.length > 0) {
-      charStrings = charStrings + arrayS2[i];
+  for (const key in reducedS2) {
+    if (!(key in reducedS1)) {
+      finalObject[key.repeat(reducedS2[key])] = 2;
     }
   }
 
-  console.log(charStrings);
+  const sortedArray = [];
+  for (let key in finalObject) {
+    sortedArray.push(`${finalObject[key]}:${key}`);
+  }
+  sortedArray.sort((a, b) => (a > b ? 1 : -1));
+  let thisIsIt = '';
+  for (let i = 10; i > 0; i--) {
+    for (const value of sortedArray) {
+      if (value.length === i) {
+        thisIsIt = thisIsIt + '/' + value;
+      }
+    }
+  }
 
-  //TO-DO compare counts1 and counts2 and print String.
-
-  console.log(counts2);
-  return counts1;
+  return thisIsIt.slice(1);
 }
 
-console.log(mix('hola que tal como estas', 'hola que tal como estas papafrita'));
+console.log(mix('looping is fun but dangerous', 'less dangerous than coding'));
