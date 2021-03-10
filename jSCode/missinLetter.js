@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function findMissingLetter(ar) {
   for (let i = 1; i < ar.length; i++) {
@@ -11,7 +11,7 @@ function findMissingLetter(ar) {
   return null;
 }
 
-var a = ["a", "b", "c", "d", "f"];
-var b = ["O", "Q", "R", "S"];
+var a = ['a', 'b', 'c', 'd', 'f'];
+var b = ['O', 'Q', 'R', 'S'];
 
 console.log(findMissingLetter(a));

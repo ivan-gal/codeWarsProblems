@@ -2,74 +2,133 @@
 
 function formatDuration(seconds) {
   let time = seconds;
-  const day = 24 * 60 * 60;
-  const hour = 60 * 60;
-  const min = 60;
-  const formatedTime = [0, 0, 0, 0];
+  let dayCount = 0;
+  let hourCount = 0;
+  let minuteCount = 0;
+  let yearCount = 0;
+  const dayD = 24 * 60 * 60;
+  const hourD = 60 * 60;
+  const minD = 60;
+  const yearD = 24 * 60 * 60 * 365;
 
-  while (time > day) {
-    time /= day;
-    formatedTime[1] += 1;
-  }
-  while (time > hour) {
-    time /= hour;
-    formatedTime[2] += 1;
-  }
-  while (time > min) {
-    time /= min;
-    formatedTime[3] += 1;
+  while (time >= yearD) {
+    time = time - yearD;
+    yearCount = yearCount + 1;
   }
 
-  formatedTime[4] = time;
-  let finalInput = '';
+  while (time >= dayD) {
+    time = time - dayD;
+    dayCount = dayCount + 1;
+  }
+  while (time >= hourD) {
+    time = time - hourD;
+    hourCount = hourCount + 1;
+  }
+  while (time >= minD) {
+    time = time - minD;
+    minuteCount = minuteCount + 1;
+  }
 
-  let [totalDay, TotalHour, TotalMin, TotalSec] = formatedTime;
-  TotalSec = Math.round(TotalSec);
-
-  switch (totalDay) {
+  switch (yearCount) {
     case 0:
-      totalDay = '';
+      yearCount = '';
       break;
     case 1:
-      totalDay = totalDay + ' day,';
+      if (hourCount === 0 && minuteCount === 0 && dayCount === 0) {
+        yearCount = yearCount + ' year';
+      } else {
+        yearCount = yearCount + ' year, ';
+      }
+
       break;
     default:
-      totalDay = totalDay + ' days,';
-      break;
-  }
-  switch (TotalHour) {
-    case 0:
-      TotalHour = '';
-      break;
-    case 1:
-      TotalHour = TotalHour + ' hour,';
-      break;
-    default:
-      TotalHour = TotalHour + ' hours,';
-      break;
-  }
-  switch (TotalMin) {
-    case 0:
-      TotalMin = '';
-      break;
-    case 1:
-      TotalMin = TotalMin + ' minute';
-      break;
-    default:
-      TotalMin = TotalMin + 'minutes';
+      if (hourCount === 0 && minuteCount === 0 && dayCount === 0) {
+        yearCount = yearCount + ' years';
+      } else {
+        yearCount = yearCount + ' years, ';
+      }
       break;
   }
 
-  switch (TotalSec) {
+  switch (dayCount) {
+    case 0:
+      dayCount = '';
+      break;
     case 1:
-      TotalSec = TotalSec + ' second';
+      if (hourCount === 0 && minuteCount === 0) {
+        dayCount = dayCount + ' day';
+      } else {
+        dayCount = dayCount + ' day, ';
+      }
+
       break;
     default:
-      TotalSec = TotalSec + ' seconds';
+      if (hourCount === 0 && minuteCount === 0) {
+        dayCount = dayCount + ' days';
+      } else {
+        dayCount = dayCount + ' days, ';
+      }
+      break;
+  }
+  switch (hourCount) {
+    case 0:
+      hourCount = '';
+      break;
+    case 1:
+      if (minuteCount === 0) {
+        hourCount = hourCount + ' hour';
+      } else {
+        hourCount = hourCount + ' hour, ';
+      }
+      break;
+    default:
+      if (minuteCount === 0) {
+        hourCount = hourCount + ' hours';
+      } else {
+        hourCount = hourCount + ' hours, ';
+      }
+      break;
+  }
+  switch (minuteCount) {
+    case 0:
+      minuteCount = '';
+      break;
+    case 1:
+      seconds > 3600 ? (minuteCount = minuteCount + ' minute') : (minuteCount = minuteCount + ' minute');
+
+      break;
+    default:
+      seconds > 3600 ? (minuteCount = minuteCount + ' minutes') : (minuteCount = minuteCount + ' minutes');
       break;
   }
 
-  return `${totalYear}${totalDay}${TotalHour}${TotalMin} and ${TotalSec}`;
+  switch (time) {
+    case 0:
+      seconds === 0 ? (time = 'now') : (time = '');
+      break;
+    case 1:
+      if (seconds > 60) {
+        time = ' and ' + time + ' second';
+      } else {
+        time = time + ' second';
+      }
+
+      break;
+    default:
+      if (seconds > 60) {
+        time = ' and ' + time + ' seconds';
+      } else {
+        time = time + ' seconds';
+      }
+  }
+  const totalLength = yearCount.length + dayCount.length + hourCount.length + minuteCount.length + time.length;
+
+  if (totalLength > 20 && seconds % 60 === 0) {
+    let finalHour = hourCount.slice(0, hourCount.length - 2);
+
+    return yearCount + dayCount + finalHour + ' and ' + minuteCount;
+  }
+  return yearCount + dayCount + hourCount + minuteCount + time;
 }
 
-console.log(formatDuration(210102302032332301301));
+console.log(formatDuration(3600));
