@@ -1,21 +1,17 @@
 'use strict';
 
 function multiply(a, b) {
-  const firstNumber = a.split('');
-  console.log(firstNumber);
-  const multiplyArray = [];
-
-  for (let i = 0; i <= a.length - 1; i++) {
-    const numberS = +firstNumber[i] * +b;
-    const numberExp = +numberS * Math.pow(10, a.length - i - 1);
-    multiplyArray[i] = numberExp;
-    console.log(multiplyArray);
+  const product = Array(a.length + b.length).fill(0);
+  for (let i = a.length; i--; null) {
+    let carry = 0;
+    for (let j = b.length; j--; null) {
+      product[1 + i + j] += carry + a[i] * b[j];
+      carry = Math.floor(product[1 + i + j] / 10);
+      product[1 + i + j] = product[1 + i + j] % 10;
+    }
+    product[i] += carry;
   }
-  let finalSum = 0;
-  for (let value of multiplyArray) {
-    finalSum += +value;
-  }
-  return finalSum.toString();
+  return product.join('').replace(/^0*(\d)/, '$1');
 }
 
 console.log(multiply('11', '85'));
