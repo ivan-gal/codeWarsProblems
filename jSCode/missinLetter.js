@@ -11,7 +11,7 @@ function findMissingLetter(ar) {
   return null;
 }
 
-var a = ['a', 'b', 'c', 'd', 'f'];
-var b = ['O', 'Q', 'R', 'S'];
+const a = ['a', 'b', 'c', 'd', 'f'];
+const b = ['O', 'Q', 'R', 'S'];
 
 console.log(findMissingLetter(a));
