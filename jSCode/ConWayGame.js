@@ -28,9 +28,23 @@ const gliders = [
 
 function getGeneration(cells) {
   //We have to get each cell to compare cases.
-  const liveArray = [];
-  for (let keyCellRow in cells) {
-    for (let cell in cells[keyCellRow]) {
+
+  cells.unshift(new Array(cells[1].length).fill(0, 0));
+  cells.push(new Array(cells[1].length).fill(0, 0));
+  cells.unshift(new Array(cells[0].length + 2).fill(0, 0));
+  cells.push(new Array(cells[0].length).fill(0, 0));
+
+  //TODO - Fix liveArray to generate a pattern.
+  const liveArray = [...cells];
+
+  //TODO - Fix this so the input goes to liveArray and not to cell again.
+
+  for (let keyCellRow = 1; keyCellRow < cells.length - 1; keyCellRow++) {
+    //We don't need to check the new emptpy arrays;
+    cells[keyCellRow].unshift(0);
+    cells[keyCellRow].push(0);
+
+    for (let cell = 1; cell < cells[keyCellRow].length - 1; cell++) {
       let survivalPoints = -1;
 
       //After getting to each cell, we need to check columns, rows and diagonals
@@ -40,14 +54,19 @@ function getGeneration(cells) {
         }
       }
 
+      //Checking conditions of survival.
+
       if (cells[keyCellRow][cell] === 0 && survivalPoints === 2) {
         cells[keyCellRow][cell] = 1;
       } else if (cells[keyCellRow][cell] === 1) {
         if (survivalPoints < 2 || survivalPoints > 3) {
-          cells[keyCellRow][cell] = 1;
+          cells[keyCellRow][cell] = 0;
         }
       }
     }
   }
-  return survivalPoints;
+  console.log(liveArray);
+  return cells;
 }
+
+console.log(getGeneration(gliders[0]));
