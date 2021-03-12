@@ -35,7 +35,10 @@ function getGeneration(cells) {
   cells.push(new Array(cells[0].length).fill(0, 0));
 
   //TODO - Fix liveArray to generate a pattern.
-  const liveArray = [...cells];
+  const liveArray = new Array(cells.length);
+  for (let iLive = 0; iLive < liveArray.length; iLive++) {
+    liveArray[iLive] = new Array(cells[0].length).fill(0, 0);
+  }
 
   //TODO - Fix this so the input goes to liveArray and not to cell again.
 
@@ -57,16 +60,17 @@ function getGeneration(cells) {
       //Checking conditions of survival.
 
       if (cells[keyCellRow][cell] === 0 && survivalPoints === 2) {
-        cells[keyCellRow][cell] = 1;
+        liveArray[keyCellRow][cell] = 1;
       } else if (cells[keyCellRow][cell] === 1) {
         if (survivalPoints < 2 || survivalPoints > 3) {
-          cells[keyCellRow][cell] = 0;
+          liveArray[keyCellRow][cell] = 0;
+        } else {
+          liveArray[keyCellRow][cell] = 1;
         }
       }
     }
   }
-  console.log(liveArray);
-  return cells;
+  return liveArray;
 }
 
 console.log(getGeneration(gliders[0]));
