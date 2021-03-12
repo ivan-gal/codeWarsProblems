@@ -34,7 +34,7 @@ function getGeneration(cells) {
   cells.unshift(new Array(cells[0].length + 2).fill(0, 0));
   cells.push(new Array(cells[0].length).fill(0, 0));
 
-  //TODO - Fix liveArray to generate a pattern.
+  //Fix liveArray to generate a pattern.
   const liveArray = new Array(cells.length);
   for (let iLive = 0; iLive < liveArray.length; iLive++) {
     liveArray[iLive] = new Array(cells[0].length).fill(0, 0);
