@@ -24,8 +24,11 @@ const gliders = [
 //TODO - Remove Zeros to see progress .
 
 function getGeneration(cells, gen) {
+  //Copy the array and the inner arrays.
   let cellsTWO = cells.map((inner) => inner.slice());
+  //Check if the gen is 0, to stop the recursive function.
   if (gen === 0) {
+    //If 0, proceed to eliminate de rows and columns full with 0s.
     while (cellsTWO[0].every((cell) => cell === 0)) {
       cellsTWO.shift();
     }
