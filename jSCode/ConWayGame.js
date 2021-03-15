@@ -2,9 +2,9 @@
 
 const gliders = [
   [
-    [1, 0, 0],
-    [0, 1, 1],
-    [1, 1, 0],
+    [1, 0, 0, 0, 0, 1, 1, 1],
+    [0, 1, 1, 0, 0, 0, 1, 0],
+    [1, 1, 0, 0, 0, 1, 0, 1],
   ],
   [
     [0, 1, 0],
@@ -24,42 +24,79 @@ const gliders = [
 //TODO - Remove Zeros to see progress .
 
 function getGeneration(cells, gen) {
-  if (gen === 0) return cells;
+  let cellsTWO = cells.map((inner) => inner.slice());
+  if (gen === 0) {
+    while (cellsTWO[0].every((cell) => cell === 0)) {
+      cellsTWO.shift();
+    }
+    while (cellsTWO[cellsTWO.length - 1].every((cel) => cel === 0)) {
+      cellsTWO.pop();
+    }
+    for (let indexTest = 0; indexTest < cellsTWO[0].length; indexTest++) {
+      let totColumnSum = 0;
+      for (let rowTest = 0; rowTest < cellsTWO.length; rowTest++) {
+        totColumnSum += cellsTWO[rowTest][indexTest];
+      }
+      if (totColumnSum === 0) {
+        for (const k in cellsTWO) {
+          cellsTWO[k].splice(indexTest, 1);
+        }
+        indexTest--;
+      } else if (totColumnSum > 1) {
+        break;
+      }
+    }
+    for (let indexTest = cellsTWO[0].length - 1; indexTest > 0; indexTest--) {
+      let totColumnSum = 0;
+      for (let rowTest = 0; rowTest < cellsTWO.length; rowTest++) {
+        totColumnSum += cellsTWO[rowTest][indexTest];
+      }
+      if (totColumnSum === 0) {
+        for (const k in cellsTWO) {
+          cellsTWO[k].splice(indexTest, 1);
+        }
+        indexTest++;
+      } else if (totColumnSum > 1) {
+        break;
+      }
+    }
+    return cellsTWO;
+  }
   //We have to get each cell to compare cases.
 
-  cells.unshift(new Array(cells[1].length).fill(0, 0));
-  cells.push(new Array(cells[1].length).fill(0, 0));
-  cells.unshift(new Array(cells[0].length + 2).fill(0, 0));
-  cells.push(new Array(cells[0].length).fill(0, 0));
+  cellsTWO.unshift(new Array(cellsTWO[1].length).fill(0, 0));
+  cellsTWO.push(new Array(cellsTWO[1].length).fill(0, 0));
+  cellsTWO.unshift(new Array(cellsTWO[0].length + 2).fill(0, 0));
+  cellsTWO.push(new Array(cellsTWO[0].length).fill(0, 0));
 
   //Fix liveArray to generate a pattern.
-  const liveArray = new Array(cells.length);
+  const liveArray = new Array(cellsTWO.length);
   for (let iLive = 0; iLive < liveArray.length; iLive++) {
-    liveArray[iLive] = new Array(cells[0].length).fill(0, 0);
+    liveArray[iLive] = new Array(cellsTWO[0].length).fill(0, 0);
   }
-  for (let rowsAdded = 1; rowsAdded < cells.length - 1; rowsAdded++) {
-    cells[rowsAdded].unshift(0);
-    cells[rowsAdded].push(0);
+  for (let rowsAdded = 1; rowsAdded < cellsTWO.length - 1; rowsAdded++) {
+    cellsTWO[rowsAdded].unshift(0);
+    cellsTWO[rowsAdded].push(0);
   }
 
-  for (let keyCellRow = 1; keyCellRow < cells.length - 1; keyCellRow++) {
+  for (let keyCellRow = 1; keyCellRow < cellsTWO.length - 1; keyCellRow++) {
     //We don't need to check the new emptpy arrays;
 
-    for (let cell = 1; cell < cells[keyCellRow].length - 1; cell++) {
+    for (let cell = 1; cell < cellsTWO[keyCellRow].length - 1; cell++) {
       let survivalPoints = -1;
 
       //After getting to each cell, we need to check columns, rows and diagonals
       for (let iRows = -1; iRows < 2; iRows++) {
         for (let iCell = -1; iCell < 2; iCell++) {
-          if (cells[keyCellRow + iRows][cell + iCell] === 1) survivalPoints++;
+          if (cellsTWO[keyCellRow + iRows][cell + iCell] === 1) survivalPoints++;
         }
       }
 
       //Checking conditions of survival.
 
-      if (cells[keyCellRow][cell] === 0 && survivalPoints === 2) {
+      if (cellsTWO[keyCellRow][cell] === 0 && survivalPoints === 2) {
         liveArray[keyCellRow][cell] = 1;
-      } else if (cells[keyCellRow][cell] === 1) {
+      } else if (cellsTWO[keyCellRow][cell] === 1) {
         if (survivalPoints === 2 || survivalPoints === 3) {
           liveArray[keyCellRow][cell] = 1;
         } else {
@@ -71,4 +108,4 @@ function getGeneration(cells, gen) {
   return getGeneration(liveArray, gen - 1);
 }
 
-console.log(getGeneration(gliders[1], 2));
+console.log(getGeneration(gliders[0], 40));
