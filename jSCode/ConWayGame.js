@@ -21,12 +21,10 @@ const gliders = [
 //Any live cell with two or three live neighbours lives on to the next generation.
 //Any dead cell with exactly three live neighbours becomes a live cell.
 
-//TODO - For each cell, you need to check the rules. For each cell, check 3x3 block.
-//TODO - First we start with the base case for the living cells.
-//TODO - Then we do the same for the dead cells.
-//TODO - After that we add the generations loop.
+//TODO - Remove Zeros to see progress .
 
-function getGeneration(cells) {
+function getGeneration(cells, gen) {
+  if (gen === 0) return cells;
   //We have to get each cell to compare cases.
 
   cells.unshift(new Array(cells[1].length).fill(0, 0));
@@ -39,13 +37,13 @@ function getGeneration(cells) {
   for (let iLive = 0; iLive < liveArray.length; iLive++) {
     liveArray[iLive] = new Array(cells[0].length).fill(0, 0);
   }
-
-  //TODO - Fix this so the input goes to liveArray and not to cell again.
+  for (let rowsAdded = 1; rowsAdded < cells.length - 1; rowsAdded++) {
+    cells[rowsAdded].unshift(0);
+    cells[rowsAdded].push(0);
+  }
 
   for (let keyCellRow = 1; keyCellRow < cells.length - 1; keyCellRow++) {
     //We don't need to check the new emptpy arrays;
-    cells[keyCellRow].unshift(0);
-    cells[keyCellRow].push(0);
 
     for (let cell = 1; cell < cells[keyCellRow].length - 1; cell++) {
       let survivalPoints = -1;
@@ -62,15 +60,15 @@ function getGeneration(cells) {
       if (cells[keyCellRow][cell] === 0 && survivalPoints === 2) {
         liveArray[keyCellRow][cell] = 1;
       } else if (cells[keyCellRow][cell] === 1) {
-        if (survivalPoints < 2 || survivalPoints > 3) {
-          liveArray[keyCellRow][cell] = 0;
-        } else {
+        if (survivalPoints === 2 || survivalPoints === 3) {
           liveArray[keyCellRow][cell] = 1;
+        } else {
+          liveArray[keyCellRow][cell] = 0;
         }
       }
     }
   }
-  return liveArray;
+  return getGeneration(liveArray, gen - 1);
 }
 
-console.log(getGeneration(gliders[0]));
+console.log(getGeneration(gliders[1], 2));
