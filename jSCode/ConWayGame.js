@@ -25,7 +25,7 @@ const gliders = [
 
 function getGeneration(cells, gen) {
   //Copy the array and the inner arrays.
-  let cellsTWO = cells.map((inner) => inner.slice());
+  const cellsTWO = cells.map((inner) => inner.slice());
   //Check if the gen is 0, to stop the recursive function.
   if (gen === 0) {
     //If 0, proceed to eliminate de rows and columns full with 0s.
@@ -111,4 +111,4 @@ function getGeneration(cells, gen) {
   return getGeneration(liveArray, gen - 1);
 }
 
-console.log(getGeneration(gliders[0], 40));
+console.log(getGeneration(gliders[0], 100));
